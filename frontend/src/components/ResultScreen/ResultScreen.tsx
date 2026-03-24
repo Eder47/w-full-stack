@@ -17,10 +17,6 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({ onClose }) => {
   const isError = paymentStatus === 'error' || currentTransaction?.status === 'DECLINED';
   const isProcessing = paymentStatus === 'processing' || loading;
 
-  console.log('📱 ResultScreen - Abierto:', isResultScreenOpen);
-  console.log('📱 Estado pago:', paymentStatus);
-  console.log('📱 Transacción:', currentTransaction);
-
   if (isProcessing) {
     return (
       <Backdrop isOpen={isResultScreenOpen}>
