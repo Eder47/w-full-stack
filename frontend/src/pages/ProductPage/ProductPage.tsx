@@ -11,11 +11,10 @@ import { ResultScreen } from '../../components/ResultScreen/ResultScreen';
 
 export const ProductPage: React.FC = () => {
   const { products, loading, error } = useProducts();
-  const { handleResetPayment, isSummaryBackdropOpen } = usePayment();
+  const { handleResetPayment } = usePayment();
   const dispatch = useAppDispatch();
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
-
-  console.log('ProductPage - isSummaryBackdropOpen:', isSummaryBackdropOpen);
+  const { isSummaryBackdropOpen } = useAppSelector((state) => state.ui);
 
   const handleBuyNow = useCallback((productId: string) => {
     setSelectedProductId(productId);

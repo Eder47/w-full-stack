@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { usePayment } from '../../hooks/usePayment';
 import { useProducts } from '../../hooks/useProducts';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -10,19 +10,28 @@ import styles from './SummaryBackdrop.module.scss';
 export const SummaryBackdrop: React.FC = () => {
   const dispatch = useAppDispatch();
   const { isSummaryBackdropOpen } = useAppSelector((state) => state.ui);
-  const { currentTransaction, deliveryInfo, handleProcessPayment, loading } = usePayment();
-  const { selectedProduct } = useProducts();
+  const { currentTransaction, handleProcessPayment, loading } = usePayment();
+  const { products } = useProducts();
+  const { deliveryInfo } = useAppSelector((state) => state.delivery);
 
-  console.log('🎨 SummaryBackdrop render - isOpen:', isSummaryBackdropOpen);
-  console.log('🎨 currentTransaction:', currentTransaction);
-  console.log('🎨 selectedProduct:', selectedProduct);
+  console.log('🎨 SummaryBackdrop - deliveryInfo desde Redux:', deliveryInfo);
+  console.log('🎨 SummaryBackdrop - isOpen:', isSummaryBackdropOpen);
+  console.log('🎨 SummaryBackdrop - currentTransaction:', currentTransaction);
+
+  const product = currentTransaction 
+    ? products.find(p => p.id === currentTransaction.productId)
+    : null;
 
   const baseFee = 3000;
   const deliveryFee = 5000;
-  const subtotal = currentTransaction?.amount ? currentTransaction.amount - baseFee - deliveryFee : 0;
+  
+  const totalAmount = currentTransaction?.amount || 0;
+  const subtotal = totalAmount > 0 ? totalAmount - baseFee - deliveryFee : 0;
 
-  // IMPORTANTE: No retornar null, dejar que Backdrop maneje la visibilidad
-  // Backdrop ya tiene su propia lógica de isOpen
+  if (!currentTransaction) {
+    console.log('No hay transacción, no mostrar resumen');
+    return null;
+  }
 
   return (
     <Backdrop isOpen={isSummaryBackdropOpen}>
@@ -30,7 +39,7 @@ export const SummaryBackdrop: React.FC = () => {
         <h2>Resumen del Pedido</h2>
         
         <div className={styles.productInfo}>
-          <h3>{selectedProduct?.name || 'Producto'}</h3>
+          <h3>{product?.name || 'Producto'}</h3>
           <p className={styles.price}>${(subtotal / 100).toLocaleString()}</p>
         </div>
 
@@ -57,7 +66,7 @@ export const SummaryBackdrop: React.FC = () => {
           </div>
           <div className={`${styles.row} ${styles.total}`}>
             <span>Total</span>
-            <span>${(currentTransaction?.amount ? currentTransaction.amount / 100 : 0).toLocaleString()}</span>
+            <span>${(totalAmount / 100).toLocaleString()}</span>
           </div>
         </div>
 

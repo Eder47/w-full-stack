@@ -64,3 +64,19 @@
     gap: $spacing-md;
   }
 }
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  margin: 20px auto;
+  border: 3px solid $primary-light;
+  border-top-color: $primary;
+  border-radius: $radius-round;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

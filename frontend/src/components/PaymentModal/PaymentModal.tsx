@@ -18,13 +18,13 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ productId }) => {
   const dispatch = useAppDispatch();
   const { isPaymentModalOpen } = useAppSelector((state) => state.ui);
   const { handleCreateTransaction, loading } = usePayment();
-  const { 
-    cardInfo, 
-    errors, 
-    updateCardInfo, 
-    validateCard, 
-    formatCardNumber, 
-    formatExpiryDate 
+  const {
+    cardInfo,
+    errors,
+    updateCardInfo,
+    validateCard,
+    formatCardNumber,
+    formatExpiryDate
   } = useCardValidation();
 
   const [deliveryInfo, setDeliveryInfo] = useState<DeliveryInfo>({
@@ -51,26 +51,24 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ productId }) => {
     return Object.keys(newErrors).length === 0;
   }, [deliveryInfo]);
 
-  const handleSubmit = useCallback(async () => {
-    console.log('🔍 Validando formulario...');
-    const isCardValid = validateCard();
-    const isDeliveryValid = validateDelivery();
+ const handleSubmit = useCallback(async () => {
 
-    console.log('Tarjeta válida:', isCardValid);
-    console.log('Envío válido:', isDeliveryValid);
+  
+  const isCardValid = validateCard();
+  const isDeliveryValid = validateDelivery();
 
-    if (isCardValid && isDeliveryValid) {
-      console.log('📦 Creando transacción para producto:', productId);
-      try {
-        await handleCreateTransaction(productId, deliveryInfo);
-        console.log('Transacción creada exitosamente');
-      } catch (error) {
-        console.error('Error al crear transacción:', error);
-      }
-    } else {
-      console.log('Formulario inválido');
+  if (isCardValid && isDeliveryValid) {
+
+    try {
+      const result = await handleCreateTransaction(productId, deliveryInfo);
+      console.log('Transacción creada:', result);
+    } catch (error) {
+      console.error(' Error al crear transacción:', error);
     }
-  }, [validateCard, validateDelivery, handleCreateTransaction, productId, deliveryInfo]);
+  } else {
+    console.log('Formulario inválido');
+  }
+}, [validateCard, validateDelivery, handleCreateTransaction, productId, deliveryInfo]);
 
   const handleClose = useCallback(() => {
     dispatch(closePaymentModal());

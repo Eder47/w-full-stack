@@ -13,6 +13,7 @@ import {
   setCurrentStep,
   resetUI,
 } from '../store/slices/uiSlice';
+import { setDeliveryInfo, clearDeliveryInfo } from '../store/slices/deliverySlice';
 import { DeliveryInfo } from '../types/payment.types';
 
 export const usePayment = () => {
@@ -20,17 +21,20 @@ export const usePayment = () => {
   const { currentTransaction, paymentStatus, loading, error } = useAppSelector(
     (state) => state.transaction
   );
-  const { currentStep, isSummaryBackdropOpen } = useAppSelector((state) => state.ui);
-
-  const [deliveryInfo, setDeliveryInfo] = useState<DeliveryInfo | null>(null);
+  const { currentStep, isSummaryBackdropOpen } = useAppSelector(
+    (state) => state.ui
+  );
+  const { deliveryInfo } = useAppSelector((state) => state.delivery);
 
   const handleCreateTransaction = async (
     productId: string,
     deliveryData: DeliveryInfo
   ) => {
-    setDeliveryInfo(deliveryData);
+    
+
+    dispatch(setDeliveryInfo(deliveryData));
+    
     try {
-      console.log('Enviando petición para crear transacción...');
       const result = await dispatch(
         createTransaction({
           productId,
@@ -39,22 +43,12 @@ export const usePayment = () => {
           deliveryAddress: `${deliveryData.address}, ${deliveryData.city}`,
         })
       ).unwrap();
-
-      console.log('Transacción creada:', result);
       
       if (result) {
-  
         dispatch(closePaymentModal());
-        console.log('Modal de pago cerrado');
-        
-
-        setTimeout(() => {
-   
-          dispatch(openSummaryBackdrop());
-          console.log('Dispatching openSummaryBackdrop');
-          dispatch(setCurrentStep(3));
-          console.log('Paso cambiado a 3');
-        }, 100);
+      
+        dispatch(openSummaryBackdrop());
+        dispatch(setCurrentStep(3));
       }
 
       return result;
@@ -68,14 +62,12 @@ export const usePayment = () => {
     if (!currentTransaction) return;
 
     try {
-      console.log('💰 Procesando pago para:', currentTransaction.id);
+      console.log('Procesando pago para:', currentTransaction.id);
       const result = await dispatch(processPayment(currentTransaction.id)).unwrap();
 
       if (result) {
         console.log('Pago procesado:', result);
-       
         dispatch(closeSummaryBackdrop());
-     
         dispatch(openResultScreen());
         dispatch(setCurrentStep(4));
       }
@@ -89,8 +81,8 @@ export const usePayment = () => {
 
   const handleResetPayment = () => {
     dispatch(clearTransaction());
+    dispatch(clearDeliveryInfo());
     dispatch(resetUI());
-    setDeliveryInfo(null);
   };
 
   return {

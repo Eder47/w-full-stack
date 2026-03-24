@@ -8,6 +8,7 @@ export const useProducts = () => {
     (state) => state.products
   );
 
+
   useEffect(() => {
     if (items.length === 0 && !loading) {
       dispatch(fetchProducts());
