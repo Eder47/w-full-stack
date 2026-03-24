@@ -1,0 +1,138 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: $spacing-lg;
+
+  @include mobile {
+    padding: $spacing-md;
+  }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: $spacing-xxl;
+
+  h1 {
+    font-size: 2.5rem;
+    color: $primary;
+    margin-bottom: $spacing-sm;
+
+    @include mobile {
+      font-size: 1.8rem;
+    }
+  }
+
+  p {
+    color: $gray-dark;
+    font-size: 1rem;
+  }
+}
+
+.productsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: $spacing-lg;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+  }
+}
+
+.productCard {
+  background: white;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-md;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-lg;
+  }
+}
+
+.productImage {
+  height: 200px;
+  background: linear-gradient(135deg, $primary-light 0%, $primary 100%);
+  @include flex-center;
+
+  .imagePlaceholder {
+    font-size: 4rem;
+  }
+}
+
+.productInfo {
+  padding: $spacing-lg;
+
+  h3 {
+    font-size: 1.25rem;
+    margin-bottom: $spacing-sm;
+    color: $dark;
+  }
+
+  .description {
+    color: $gray-dark;
+    font-size: 0.875rem;
+    margin-bottom: $spacing-md;
+    line-height: 1.5;
+  }
+}
+
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-lg;
+
+  .price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: $primary;
+  }
+
+  .stock {
+    font-size: 0.75rem;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $radius-sm;
+    font-weight: 600;
+
+    &.inStock {
+      background: $success;
+      color: white;
+    }
+
+    &.outOfStock {
+      background: $danger;
+      color: white;
+    }
+  }
+}
+
+.loading,
+.error {
+  min-height: 100vh;
+  @include flex-center;
+  flex-direction: column;
+  gap: $spacing-md;
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid $primary-light;
+    border-top-color: $primary;
+    border-radius: $radius-round;
+    animation: spin 0.6s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

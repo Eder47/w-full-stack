@@ -1,0 +1,66 @@
+@import '../../styles/variables';
+
+.summary {
+  padding: $spacing-xl;
+
+  h2 {
+    margin-bottom: $spacing-lg;
+    color: $primary;
+  }
+
+  h3 {
+    margin-bottom: $spacing-sm;
+    color: $dark;
+  }
+
+  .productInfo {
+    margin-bottom: $spacing-lg;
+    padding: $spacing-md;
+    background: $light;
+    border-radius: $radius-md;
+
+    .price {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: $primary;
+    }
+  }
+
+  .deliveryInfo {
+    margin-bottom: $spacing-lg;
+    padding: $spacing-md;
+    background: $light;
+    border-radius: $radius-md;
+
+    p {
+      margin: $spacing-xs 0;
+      font-size: 0.875rem;
+    }
+  }
+
+  .breakdown {
+    margin-bottom: $spacing-lg;
+    border-top: 1px solid $gray;
+    padding-top: $spacing-md;
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      margin: $spacing-sm 0;
+
+      &.total {
+        margin-top: $spacing-md;
+        padding-top: $spacing-md;
+        border-top: 2px solid $gray;
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: $primary;
+      }
+    }
+  }
+
+  .actions {
+    display: flex;
+    gap: $spacing-md;
+  }
+}

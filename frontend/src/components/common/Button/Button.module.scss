@@ -1,0 +1,94 @@
+@import '../../../styles/variables';
+@import '../../../styles/mixins';
+
+.button {
+  border: none;
+  border-radius: $radius-md;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  @include flex-center;
+  gap: $spacing-sm;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+}
+
+// Variants
+.primary {
+  background: $primary;
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: $primary-dark;
+  }
+}
+
+.secondary {
+  background: $gray;
+  color: $dark;
+
+  &:hover:not(:disabled) {
+    background: $gray-dark;
+    color: white;
+  }
+}
+
+.danger {
+  background: $danger;
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: darken($danger, 10%);
+  }
+}
+
+.success {
+  background: $success;
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: darken($success, 10%);
+  }
+}
+
+// Sizes
+.small {
+  padding: $spacing-sm $spacing-md;
+  font-size: 12px;
+}
+
+.medium {
+  padding: $spacing-md $spacing-lg;
+  font-size: 14px;
+}
+
+.large {
+  padding: $spacing-lg $spacing-xl;
+  font-size: 16px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: $radius-round;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

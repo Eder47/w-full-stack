@@ -1,0 +1,41 @@
+@import '../../styles/variables';
+
+.result {
+  text-align: center;
+  padding: $spacing-xl;
+
+  .icon {
+    font-size: 4rem;
+    margin-bottom: $spacing-lg;
+
+    &.success {
+      color: $success;
+    }
+
+    &.error {
+      color: $danger;
+    }
+  }
+
+  h2 {
+    margin-bottom: $spacing-md;
+    color: $dark;
+  }
+
+  p {
+    margin-bottom: $spacing-lg;
+    color: $gray-dark;
+  }
+
+  .details {
+    background: $light;
+    padding: $spacing-md;
+    border-radius: $radius-md;
+    margin-bottom: $spacing-lg;
+    text-align: left;
+
+    p {
+      margin: $spacing-xs 0;
+    }
+  }
+}

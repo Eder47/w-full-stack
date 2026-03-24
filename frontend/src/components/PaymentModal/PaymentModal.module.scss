@@ -1,0 +1,25 @@
+@import '../../styles/variables';
+
+.paymentModal {
+  .section {
+    margin-bottom: $spacing-lg;
+
+    h3 {
+      margin-bottom: $spacing-md;
+      color: $dark;
+      font-size: 1rem;
+    }
+  }
+
+  .divider {
+    height: 1px;
+    background: $gray;
+    margin: $spacing-lg 0;
+  }
+
+  .actions {
+    display: flex;
+    gap: $spacing-md;
+    margin-top: $spacing-lg;
+  }
+}
