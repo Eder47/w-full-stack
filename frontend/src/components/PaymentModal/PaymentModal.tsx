@@ -52,11 +52,23 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({ productId }) => {
   }, [deliveryInfo]);
 
   const handleSubmit = useCallback(async () => {
+    console.log('🔍 Validando formulario...');
     const isCardValid = validateCard();
     const isDeliveryValid = validateDelivery();
 
+    console.log('Tarjeta válida:', isCardValid);
+    console.log('Envío válido:', isDeliveryValid);
+
     if (isCardValid && isDeliveryValid) {
-      await handleCreateTransaction(productId, deliveryInfo);
+      console.log('📦 Creando transacción para producto:', productId);
+      try {
+        await handleCreateTransaction(productId, deliveryInfo);
+        console.log('Transacción creada exitosamente');
+      } catch (error) {
+        console.error('Error al crear transacción:', error);
+      }
+    } else {
+      console.log('Formulario inválido');
     }
   }, [validateCard, validateDelivery, handleCreateTransaction, productId, deliveryInfo]);
 

@@ -11,10 +11,27 @@ interface ResultScreenProps {
 
 export const ResultScreen: React.FC<ResultScreenProps> = ({ onClose }) => {
   const { isResultScreenOpen } = useAppSelector((state) => state.ui);
-  const { currentTransaction, paymentStatus } = usePayment();
+  const { currentTransaction, paymentStatus, loading } = usePayment();
 
   const isSuccess = paymentStatus === 'success' && currentTransaction?.status === 'APPROVED';
   const isError = paymentStatus === 'error' || currentTransaction?.status === 'DECLINED';
+  const isProcessing = paymentStatus === 'processing' || loading;
+
+  console.log('📱 ResultScreen - Abierto:', isResultScreenOpen);
+  console.log('📱 Estado pago:', paymentStatus);
+  console.log('📱 Transacción:', currentTransaction);
+
+  if (isProcessing) {
+    return (
+      <Backdrop isOpen={isResultScreenOpen}>
+        <div className={styles.result}>
+          <div className={styles.spinner} />
+          <h2>Procesando Pago...</h2>
+          <p>Por favor espera, estamos procesando tu transacción.</p>
+        </div>
+      </Backdrop>
+    );
+  }
 
   return (
     <Backdrop isOpen={isResultScreenOpen}>
@@ -28,6 +45,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({ onClose }) => {
               <p><strong>ID Transacción:</strong> {currentTransaction?.id}</p>
               <p><strong>Monto:</strong> ${((currentTransaction?.amount || 0) / 100).toLocaleString()}</p>
               <p><strong>Estado:</strong> Aprobado</p>
+              <p><strong>Producto:</strong> {currentTransaction?.productId}</p>
             </div>
             <Button variant="primary" onClick={onClose}>
               Seguir Comprando
@@ -40,6 +58,10 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({ onClose }) => {
             <div className={`${styles.icon} ${styles.error}`}>✗</div>
             <h2>Pago Fallido</h2>
             <p>{currentTransaction?.errorMessage || 'Hubo un error al procesar tu pago. Por favor intenta nuevamente.'}</p>
+            <div className={styles.details}>
+              <p><strong>ID Transacción:</strong> {currentTransaction?.id}</p>
+              <p><strong>Estado:</strong> {currentTransaction?.status || 'ERROR'}</p>
+            </div>
             <Button variant="primary" onClick={onClose}>
               Intentar Nuevamente
             </Button>

@@ -1,3 +1,4 @@
+// src/store/slices/uiSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UIState {
@@ -25,9 +26,12 @@ const uiSlice = createSlice({
       state.isPaymentModalOpen = false;
     },
     openSummaryBackdrop: (state) => {
+      console.log('📋 REDUCER: Abriendo resumen, estado actual:', state.isSummaryBackdropOpen);
       state.isSummaryBackdropOpen = true;
+      console.log('📋 REDUCER: Nuevo estado:', state.isSummaryBackdropOpen);
     },
     closeSummaryBackdrop: (state) => {
+      console.log('📋 REDUCER: Cerrando resumen');
       state.isSummaryBackdropOpen = false;
     },
     openResultScreen: (state) => {

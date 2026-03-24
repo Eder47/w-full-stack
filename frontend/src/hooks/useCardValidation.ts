@@ -1,4 +1,3 @@
-// src/hooks/useCardValidation.ts
 import { useState, useCallback, useMemo } from 'react';
 import * as cardValidator from 'card-validator';
 import { CardInfo, CardValidationResult } from '../types/payment.types';
@@ -13,7 +12,7 @@ export const useCardValidation = () => {
 
   const [errors, setErrors] = useState<CardValidationResult['errors']>({});
 
-  // Usar useMemo para evitar recalcular en cada render
+
   const validationResult = useMemo(() => {
     const newErrors: CardValidationResult['errors'] = {};
 

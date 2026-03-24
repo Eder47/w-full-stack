@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useProducts } from '../../hooks/useProducts';
 import { usePayment } from '../../hooks/usePayment';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { openPaymentModal, setCurrentStep } from '../../store/slices/uiSlice';
 import { Button } from '../../components/common/Button';
 import styles from './ProductPage.module.scss';
@@ -11,9 +11,11 @@ import { ResultScreen } from '../../components/ResultScreen/ResultScreen';
 
 export const ProductPage: React.FC = () => {
   const { products, loading, error } = useProducts();
-  const { handleResetPayment } = usePayment();
+  const { handleResetPayment, isSummaryBackdropOpen } = usePayment();
   const dispatch = useAppDispatch();
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
+
+  console.log('ProductPage - isSummaryBackdropOpen:', isSummaryBackdropOpen);
 
   const handleBuyNow = useCallback((productId: string) => {
     setSelectedProductId(productId);

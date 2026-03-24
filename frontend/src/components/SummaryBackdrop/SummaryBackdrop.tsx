@@ -13,11 +13,16 @@ export const SummaryBackdrop: React.FC = () => {
   const { currentTransaction, deliveryInfo, handleProcessPayment, loading } = usePayment();
   const { selectedProduct } = useProducts();
 
+  console.log('🎨 SummaryBackdrop render - isOpen:', isSummaryBackdropOpen);
+  console.log('🎨 currentTransaction:', currentTransaction);
+  console.log('🎨 selectedProduct:', selectedProduct);
+
   const baseFee = 3000;
   const deliveryFee = 5000;
   const subtotal = currentTransaction?.amount ? currentTransaction.amount - baseFee - deliveryFee : 0;
 
-  if (!currentTransaction || !selectedProduct) return null;
+  // IMPORTANTE: No retornar null, dejar que Backdrop maneje la visibilidad
+  // Backdrop ya tiene su propia lógica de isOpen
 
   return (
     <Backdrop isOpen={isSummaryBackdropOpen}>
@@ -25,16 +30,16 @@ export const SummaryBackdrop: React.FC = () => {
         <h2>Resumen del Pedido</h2>
         
         <div className={styles.productInfo}>
-          <h3>{selectedProduct.name}</h3>
+          <h3>{selectedProduct?.name || 'Producto'}</h3>
           <p className={styles.price}>${(subtotal / 100).toLocaleString()}</p>
         </div>
 
         <div className={styles.deliveryInfo}>
           <h3>Detalles de Envío</h3>
-          <p><strong>Nombre:</strong> {deliveryInfo?.fullName}</p>
-          <p><strong>Email:</strong> {deliveryInfo?.email}</p>
-          <p><strong>Dirección:</strong> {deliveryInfo?.address}, {deliveryInfo?.city}</p>
-          <p><strong>Teléfono:</strong> {deliveryInfo?.phone}</p>
+          <p><strong>Nombre:</strong> {deliveryInfo?.fullName || 'No disponible'}</p>
+          <p><strong>Email:</strong> {deliveryInfo?.email || 'No disponible'}</p>
+          <p><strong>Dirección:</strong> {deliveryInfo?.address || 'No disponible'}, {deliveryInfo?.city || ''}</p>
+          <p><strong>Teléfono:</strong> {deliveryInfo?.phone || 'No disponible'}</p>
         </div>
 
         <div className={styles.breakdown}>
@@ -52,7 +57,7 @@ export const SummaryBackdrop: React.FC = () => {
           </div>
           <div className={`${styles.row} ${styles.total}`}>
             <span>Total</span>
-            <span>${(currentTransaction.amount / 100).toLocaleString()}</span>
+            <span>${(currentTransaction?.amount ? currentTransaction.amount / 100 : 0).toLocaleString()}</span>
           </div>
         </div>
 

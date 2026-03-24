@@ -20,7 +20,7 @@ export const usePayment = () => {
   const { currentTransaction, paymentStatus, loading, error } = useAppSelector(
     (state) => state.transaction
   );
-  const { currentStep } = useAppSelector((state) => state.ui);
+  const { currentStep, isSummaryBackdropOpen } = useAppSelector((state) => state.ui);
 
   const [deliveryInfo, setDeliveryInfo] = useState<DeliveryInfo | null>(null);
 
@@ -30,6 +30,7 @@ export const usePayment = () => {
   ) => {
     setDeliveryInfo(deliveryData);
     try {
+      console.log('Enviando petición para crear transacción...');
       const result = await dispatch(
         createTransaction({
           productId,
@@ -39,10 +40,21 @@ export const usePayment = () => {
         })
       ).unwrap();
 
+      console.log('Transacción creada:', result);
+      
       if (result) {
+  
         dispatch(closePaymentModal());
-        dispatch(openSummaryBackdrop());
-        dispatch(setCurrentStep(3));
+        console.log('Modal de pago cerrado');
+        
+
+        setTimeout(() => {
+   
+          dispatch(openSummaryBackdrop());
+          console.log('Dispatching openSummaryBackdrop');
+          dispatch(setCurrentStep(3));
+          console.log('Paso cambiado a 3');
+        }, 100);
       }
 
       return result;
@@ -56,10 +68,14 @@ export const usePayment = () => {
     if (!currentTransaction) return;
 
     try {
+      console.log('💰 Procesando pago para:', currentTransaction.id);
       const result = await dispatch(processPayment(currentTransaction.id)).unwrap();
 
       if (result) {
+        console.log('Pago procesado:', result);
+       
         dispatch(closeSummaryBackdrop());
+     
         dispatch(openResultScreen());
         dispatch(setCurrentStep(4));
       }
@@ -84,6 +100,7 @@ export const usePayment = () => {
     loading,
     error,
     currentStep,
+    isSummaryBackdropOpen,
     handleCreateTransaction,
     handleProcessPayment,
     handleResetPayment,
