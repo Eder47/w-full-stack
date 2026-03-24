@@ -8,7 +8,6 @@ interface BackdropProps {
 }
 
 export const Backdrop: React.FC<BackdropProps> = ({ isOpen, children, onClose }) => {
-  console.log('Backdrop render - isOpen:', isOpen);
   
   if (!isOpen) return null;
 

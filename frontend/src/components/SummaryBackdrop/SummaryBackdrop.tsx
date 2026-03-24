@@ -14,9 +14,6 @@ export const SummaryBackdrop: React.FC = () => {
   const { products } = useProducts();
   const { deliveryInfo } = useAppSelector((state) => state.delivery);
 
-  console.log('🎨 SummaryBackdrop - deliveryInfo desde Redux:', deliveryInfo);
-  console.log('🎨 SummaryBackdrop - isOpen:', isSummaryBackdropOpen);
-  console.log('🎨 SummaryBackdrop - currentTransaction:', currentTransaction);
 
   const product = currentTransaction 
     ? products.find(p => p.id === currentTransaction.productId)
@@ -29,7 +26,6 @@ export const SummaryBackdrop: React.FC = () => {
   const subtotal = totalAmount > 0 ? totalAmount - baseFee - deliveryFee : 0;
 
   if (!currentTransaction) {
-    console.log('No hay transacción, no mostrar resumen');
     return null;
   }
 
